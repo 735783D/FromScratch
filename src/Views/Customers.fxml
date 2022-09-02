@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="800.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CustomersController">
+   <children>
+      <TableView fx:id="Customers" layoutX="14.0" layoutY="60.0" prefHeight="266.0" prefWidth="572.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+        <columns>
+          <TableColumn fx:id="CustomerId" editable="false" prefWidth="42.0" resizable="false" text="ID" />
+          <TableColumn fx:id="CustomerName" prefWidth="118.0" resizable="false" text="Name" />
+            <TableColumn fx:id="CustomerAddress" prefWidth="101.0" resizable="false" text="Address" />
+            <TableColumn fx:id="CustomerPostalCode" prefWidth="117.0" resizable="false" text="Postal Code" />
+            <TableColumn fx:id="CustomerPhone" prefWidth="132.0" resizable="false" text="Phone" />
+            <TableColumn fx:id="CustomerCountry" prefWidth="122.0" resizable="false" text="Country" />
+            <TableColumn fx:id="CustomerFLD" prefWidth="139.0" resizable="false" text="Division" />
+        </columns>
+      </TableView>
+      <Button fx:id="MainMenu" layoutX="650.0" layoutY="21.0" mnemonicParsing="false" onAction="#BackToMain" text="Back To Main Menu" />
+      <Button fx:id="DeleteCustomer" layoutX="623.0" layoutY="346.0" mnemonicParsing="false" text="Delete Customer" />
+      <Button fx:id="UpdateCustomer" layoutX="345.0" layoutY="346.0" mnemonicParsing="false" text="Update Customer" />
+      <Button fx:id="CreateCustomer" layoutX="68.0" layoutY="346.0" mnemonicParsing="false" text="Create Customer" />
+      <TextField layoutX="20.0" layoutY="22.0" promptText="Search by ID or Name" />
+      <Label fx:id="TitleCustomers" layoutX="322.0" layoutY="14.0" text="Customers!!!" textFill="#fffefe">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <Button fx:id="Search" layoutX="175.0" layoutY="21.0" mnemonicParsing="false" text="Search" />
+   </children>
+</AnchorPane>
