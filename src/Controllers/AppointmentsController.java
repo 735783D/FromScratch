@@ -6,38 +6,85 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainMenuController implements Initializable {
+public class AppointmentsController implements Initializable {
+    @FXML
+    private RadioButton AllTimesDisplay;
 
     @FXML
-    private Button ButtonAppointments;
+    private TableView<?> Appointments;
 
     @FXML
-    private Button ButtonCustomers;
+    private Label AppointmentsTitle;
 
     @FXML
-    private Button ButtonLogout;
+    private TextField ApptSearch;
 
     @FXML
-    private Button ButtonReports;
+    private Button Cancel;
 
     @FXML
-    private Label LabelMenuTitle;
+    private TableColumn<?, ?> ColumnAppointmentID;
 
     @FXML
-    void CustomersMenu(ActionEvent event){
+    private TableColumn<?, ?> ColumnContact;
+
+    @FXML
+    private TableColumn<?, ?> ColumnCustomerID;
+
+    @FXML
+    private TableColumn<?, ?> ColumnDescription;
+
+    @FXML
+    private TableColumn<?, ?> ColumnEnd;
+
+    @FXML
+    private TableColumn<?, ?> ColumnLocation;
+
+    @FXML
+    private TableColumn<?, ?> ColumnStart;
+
+    @FXML
+    private TableColumn<?, ?> ColumnTitle;
+
+    @FXML
+    private TableColumn<?, ?> ColumnType;
+
+    @FXML
+    private TableColumn<?, ?> ColumnUserID;
+
+    @FXML
+    private Button CreateAppointment;
+
+    @FXML
+    private Button DeleteAppointment;
+
+    @FXML
+    private Label Displays;
+
+    @FXML
+    private RadioButton MonthDisplay;
+
+    @FXML
+    private Button Search;
+
+    @FXML
+    private Button UpdateAppointment;
+
+    @FXML
+    private RadioButton WeekDisplay;
+
+    public void BackToMain(ActionEvent event){
         try {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            Parent scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
+            Parent scene = FXMLLoader.load(getClass().getResource("/Views/MainMenu.fxml"));
             stage.setScene(new Scene(scene));
-            stage.setTitle("Customers!!!");
+            stage.setTitle("Main Menu!!");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,13 +95,12 @@ public class MainMenuController implements Initializable {
         }
     }
 
-    @FXML
-    void AppointmentsMenu(ActionEvent event){
+    public void CreateAppointmentMenu(ActionEvent event){
         try {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            Parent scene = FXMLLoader.load(getClass().getResource("/Views/Appointments.fxml"));
+            Parent scene = FXMLLoader.load(getClass().getResource("/Views/CreateAppointments.fxml"));
             stage.setScene(new Scene(scene));
-            stage.setTitle("Appointments!!!");
+            stage.setTitle("Main Menu!!");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,31 +111,12 @@ public class MainMenuController implements Initializable {
         }
     }
 
-    @FXML
-    void ReportsMenu(ActionEvent event){
+    public void UpdateAppointmentMenu(ActionEvent event){
         try {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            Parent scene = FXMLLoader.load(getClass().getResource("/Views/Reports.fxml"));
+            Parent scene = FXMLLoader.load(getClass().getResource("/Views/UpdateAppointment.fxml"));
             stage.setScene(new Scene(scene));
-            stage.setTitle("Reports!!!");
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setContentText("Load Screen Error.");
-            alert.showAndWait();
-        }
-    }
-    @FXML
-    void Logout(ActionEvent event) {
-
-
-        try {
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            Parent scene = FXMLLoader.load(getClass().getResource("/Views/Login.fxml"));
-            stage.setScene(new Scene(scene));
-            stage.setTitle("Login");
+            stage.setTitle("Main Menu!!");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();

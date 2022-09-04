@@ -21,10 +21,13 @@ public class CustomersController implements Initializable {
     private Button DeleteCustomer;
 
     @FXML
+    private TextField CustSearchText;
+
+    @FXML
     private Button MainMenu;
 
     @FXML
-    private Button Search;
+    private Button CustSearchButton;
 
     @FXML
     private Button UpdateCustomer;
@@ -61,7 +64,7 @@ public class CustomersController implements Initializable {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             Parent scene = FXMLLoader.load(getClass().getResource("/Views/MainMenu.fxml"));
             stage.setScene(new Scene(scene));
-            stage.setTitle("Main Menu");
+            stage.setTitle("Main Menu!!");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,7 +81,7 @@ public class CustomersController implements Initializable {
             Parent scene = FXMLLoader.load(getClass().getResource("/Views/CreateCustomers" +
                     ".fxml"));
             stage.setScene(new Scene(scene));
-            stage.setTitle("Create Customers");
+            stage.setTitle("Create Customers!!");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +92,25 @@ public class CustomersController implements Initializable {
         }
     }
 
+    public void UpdateCustomers(ActionEvent event){
+        try {
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            Parent scene = FXMLLoader.load(getClass().getResource("/Views/UpdateCustomers.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.setTitle("Update Customers!!");
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setContentText("Load Screen Error.");
+            alert.showAndWait();
+        }
+    }
 
+    public void deleteCustomer(){
+
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
