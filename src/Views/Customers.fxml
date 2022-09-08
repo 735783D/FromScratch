@@ -22,7 +22,7 @@
         </columns>
       </TableView>
       <Button fx:id="MainMenu" layoutX="650.0" layoutY="21.0" mnemonicParsing="false" onAction="#BackToMain" text="Back To Main Menu" />
-      <Button fx:id="DeleteCustomer" layoutX="623.0" layoutY="346.0" mnemonicParsing="false" style="-fx-background-color: #fa001d;" text="Delete Customer" />
+      <Button fx:id="DeleteCustomer" layoutX="623.0" layoutY="346.0" mnemonicParsing="false" onAction="#DeleteCustomer" style="-fx-background-color: #fa001d;" text="Delete Customer" />
       <Button fx:id="UpdateCustomer" layoutX="345.0" layoutY="346.0" mnemonicParsing="false" onAction="#UpdateCustomers" style="-fx-background-color: #f7fb4b;" text="Update Customer" />
       <Button fx:id="CreateCustomer" layoutX="68.0" layoutY="346.0" mnemonicParsing="false" onAction="#CreateCustomers" style="-fx-background-color: #3eaf00;" text="Create Customer" />
       <TextField fx:id="CustSearchText" layoutX="20.0" layoutY="22.0" promptText="Search by ID or Name" />

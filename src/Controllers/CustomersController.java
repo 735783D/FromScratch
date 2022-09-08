@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CustomersController implements Initializable {
@@ -120,8 +121,36 @@ public class CustomersController implements Initializable {
             }
         }
     }
-    public void deleteCustomer(){
 
+    public void DeleteCustomer(ActionEvent event) {
+        Customer selectedCustomer = Customers.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setContentText("You must select a customer to delete.");
+            alert.showAndWait();
+        } else if (Customers.getSelectionModel().getSelectedItem() != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will delete the selected customer. Do you wish to continue?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && (result.get() == ButtonType.OK)) {
+                try {
+                    boolean deleteSuccessful = DBCustomers.deleteCustomer(Customers.getSelectionModel().getSelectedItem().getCustomerId());
+
+                    if (deleteSuccessful) {
+                        customers = DBCustomers.getCustomers();
+                        Customers.setItems(customers);
+                        Customers.refresh();
+                    } else {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Dialog");
+                        alert.setContentText("Could not delete Customer.");
+                        alert.showAndWait();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     private static ObservableList<Customer> lookupCustomer(String input) {
@@ -139,7 +168,6 @@ public class CustomersController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-
             customers = DBCustomers.getCustomers();
 
             Customers.setItems(customers);
