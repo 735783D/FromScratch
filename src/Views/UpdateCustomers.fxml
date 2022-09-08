@@ -19,10 +19,10 @@
                 <Font name="System Italic" size="18.0" />
             </font>
         </TextField>
-        <Button fx:id="Save" layoutX="406.0" layoutY="284.0" mnemonicParsing="false" prefWidth="52.0" text="Save" />
-        <Button fx:id="Cancel" layoutX="504.0" layoutY="284.0" mnemonicParsing="false" onAction="#Cancel" text="Cancel" />
-        <ComboBox fx:id="CountryBox" layoutX="406.0" layoutY="128.0" prefWidth="150.0" />
-        <ComboBox fx:id="DivisionBox" layoutX="406.0" layoutY="218.0" prefWidth="150.0" />
+        <Button fx:id="Save" layoutX="406.0" layoutY="284.0" mnemonicParsing="false" onAction="#Save" prefWidth="52.0" text="Save" />
+        <Button fx:id="Cancel" layoutX="504.0" layoutY="284.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
+        <ComboBox fx:id="CountryBox" layoutX="406.0" layoutY="128.0" onAction="#SelectCountry" prefWidth="150.0" />
+        <ComboBox fx:id="DivisionBox" layoutX="406.0" layoutY="218.0" onAction="#SelectDivision" prefWidth="150.0" />
         <Label fx:id="PostalCodeLabel" layoutX="23.0" layoutY="263.0" text="Postal Code" textFill="WHITE">
             <font>
                 <Font size="18.0" />
@@ -78,5 +78,6 @@
                 <Font size="18.0" />
             </font>
         </Label>
+      <Button fx:id="homeButton" layoutX="457.0" layoutY="329.0" mnemonicParsing="false" onAction="#home" text="Home" />
     </children>
 </AnchorPane>

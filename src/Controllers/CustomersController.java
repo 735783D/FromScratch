@@ -1,5 +1,9 @@
 package Controllers;
 
+import Database.DBCustomers;
+import Models.Customer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,12 +11,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class CustomersController implements Initializable {
+
+    static ObservableList<Customer> customers;
+
 
     @FXML
     private Button CreateCustomer;
@@ -33,31 +42,31 @@ public class CustomersController implements Initializable {
     private Button UpdateCustomer;
 
     @FXML
-    private TableColumn<?, ?> CustomerAddress;
+    private TableColumn<Customer, String > CustomerAddress;
 
     @FXML
-    private TableColumn<?, ?> CustomerCountry;
+    private TableColumn<Customer, String > CustomerCountry;
 
     @FXML
-    private TableColumn<?, ?> CustomerFLD;
+    private TableColumn<Customer, String > CustomerFLD;
 
     @FXML
-    private TableColumn<?, ?> CustomerId;
+    private TableColumn<Customer, Integer> CustomerId;
 
     @FXML
-    private TableColumn<?, ?> CustomerName;
+    private TableColumn<Customer, String > CustomerName;
 
     @FXML
-    private TableColumn<?, ?> CustomerPhone;
+    private TableColumn<Customer, String> CustomerPhone;
 
     @FXML
-    private TableColumn<?, ?> CustomerPostalCode;
+    private TableColumn<Customer, String> CustomerPostalCode;
 
     @FXML
     private Label TitleCustomers;
 
     @FXML
-    private TableView<?> Customers;
+    private TableView<Customer> Customers;
 
     public void BackToMain(ActionEvent event){
         try {
@@ -92,27 +101,58 @@ public class CustomersController implements Initializable {
         }
     }
 
-    public void UpdateCustomers(ActionEvent event){
-        try {
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            Parent scene = FXMLLoader.load(getClass().getResource("/Views/UpdateCustomers.fxml"));
-            stage.setScene(new Scene(scene));
-            stage.setTitle("Update Customers!!");
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setContentText("Load Screen Error.");
-            alert.showAndWait();
+    public void UpdateCustomers(ActionEvent event) {
+        UpdateCustomersController.receiveSelectedCustomer(Customers.getSelectionModel().getSelectedItem());
+
+        if (Customers.getSelectionModel().getSelectedItem() != null) {
+            try {
+                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                Parent scene = FXMLLoader.load(getClass().getResource("/Views/UpdateCustomers.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.setTitle("Update Customers!!");
+                stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Dialog");
+                alert.setContentText("Load Screen Error.");
+                alert.showAndWait();
+            }
         }
     }
-
     public void deleteCustomer(){
 
     }
+
+    private static ObservableList<Customer> lookupCustomer(String input) {
+        ObservableList<Customer> customerList = FXCollections.observableArrayList();
+
+        for (Customer customer: customers) {
+            if (customer.getCustomerName().contains(input)) {
+                customerList.add(customer);
+            } else if (Integer.toString(customer.getCustomerId()).contains(input)) {
+                customerList.add(customer);
+            }
+        }
+        return customerList;
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+
+            customers = DBCustomers.getCustomers();
+
+            Customers.setItems(customers);
+            CustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            CustomerName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+            CustomerAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+            CustomerPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+            CustomerPhone.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+            CustomerFLD.setCellValueFactory(new PropertyValueFactory<>("division"));
+            CustomerCountry.setCellValueFactory(new PropertyValueFactory<>("country"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 }
