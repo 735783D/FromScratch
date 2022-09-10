@@ -87,7 +87,7 @@ public class DivisionQuery {
 
         ObservableList<Division> divisions = FXCollections.observableArrayList();
 
-        String queryStatement = "SELECT * FROM first_level_divisions WHERE COUNTRY_ID=?;";
+        String queryStatement = "SELECT * FROM first_level_divisions WHERE Country_ID=?;";
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), queryStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();

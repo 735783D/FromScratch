@@ -19,7 +19,7 @@ public class DBCustomers {
     public static ObservableList<Customer> getCustomers() throws SQLException {
         ObservableList<Customer> customers = FXCollections.observableArrayList();
 
-        String searchStatement = "SELECT * FROM customers AS c INNER JOIN first_level_divisions AS d ON c.Division = d.Division INNER JOIN countries AS co ON co.Country_ID=d.COUNTRY_ID;";
+        String searchStatement = "SELECT * FROM customers AS c INNER JOIN first_level_divisions AS d ON c.Division = d.Division INNER JOIN countries AS co ON co.Country_ID=d.Country_ID;";
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), searchStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
@@ -51,12 +51,14 @@ public class DBCustomers {
         }
     }
 
-    /** This method creates a new Customer
-     * @param name String value of Customer Name
-     * @param address String value of Customer Address
+    /**
+     * This method creates a new Customer
+     *
+     * @param name       String value of Customer Name
+     * @param address    String value of Customer Address
      * @param postalCode String value of Customer Postal Code
-     * @param phone String value of Customer Phone Number
-     * @param division String value of Division Name
+     * @param phone      String value of Customer Phone Number
+     * @param division   String value of Division Name
      * @return Boolean Returns true if the customer was successfully created and false if the customer creation failed
      * @throws SQLException Catches SQLException, prints stacktrace, and error message.
      */
@@ -75,8 +77,7 @@ public class DBCustomers {
         preparedStatement.setString(4, phone);
         preparedStatement.setString(5, division);
         preparedStatement.setString(6, country);
-
-        //preparedStatement.setInt(5, newDivision.getDivisionId());
+       // preparedStatement.setInt(5, newDivision.getDivisionId());
 
         try {
             preparedStatement.execute();
