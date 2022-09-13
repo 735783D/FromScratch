@@ -111,7 +111,7 @@ public class AppointmentsController implements Initializable {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             Parent scene = FXMLLoader.load(getClass().getResource("/Views/CreateAppointments.fxml"));
             stage.setScene(new Scene(scene));
-            stage.setTitle("Main Menu!!");
+            stage.setTitle("Appointments!!");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,6 +124,8 @@ public class AppointmentsController implements Initializable {
 
 
     public void UpdateAppointmentMenu(ActionEvent event){
+        UpdateAppointmentController.receiveSelectedAppointment(Appointments.getSelectionModel().getSelectedItem());
+
         try {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             Parent scene = FXMLLoader.load(getClass().getResource("/Views/UpdateAppointment.fxml"));
