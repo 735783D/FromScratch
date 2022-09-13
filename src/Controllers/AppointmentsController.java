@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AppointmentsController implements Initializable {
@@ -139,6 +140,50 @@ public class AppointmentsController implements Initializable {
             alert.setContentText("Load Screen Error.");
             alert.showAndWait();
         }
+    }
+
+    /** Deletes appointment when clicked.
+     * Appointment must be selected prior to clicking Delete Appointment button or it will throw an error dialog.
+     * Catches Exception, throws alert, and prints stacktrace.
+     * @param event ActionEvent deletes appointment when clicked
+     */
+    @FXML
+    void DeleteAppointment(ActionEvent event) {
+        Appointment selectedAppointment = Appointments.getSelectionModel().getSelectedItem();
+        if (selectedAppointment == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setContentText("You must select an appointment to delete.");
+            alert.showAndWait();
+        } else if (Appointments.getSelectionModel().getSelectedItem() != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will delete the selected appointment. Do you wish to continue?");
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && (result.get() == ButtonType.OK)) {
+                try {
+                    boolean deleteSuccessful = DBAppointments.deleteAppointment(Appointments.getSelectionModel().getSelectedItem().getAppointmentId());
+
+                    if (deleteSuccessful) {
+                        alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Successful Delete");
+                        alert.setContentText("Successfully deleted Appointment ID: " + selectedAppointment.getAppointmentId() + " Type: " + selectedAppointment.getType());
+                        alert.showAndWait();
+
+                        appointments = DBAppointments.getAppointments();
+                        Appointments.setItems(appointments);
+                        Appointments.refresh();
+                    } else {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Dialog");
+                        alert.setContentText("Could not delete appointment.");
+                        alert.showAndWait();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 
     @Override

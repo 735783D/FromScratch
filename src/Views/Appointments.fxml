@@ -38,7 +38,7 @@
       <Button fx:id="Search" layoutX="214.0" layoutY="30.0" mnemonicParsing="false" text="Search" />
       <Button fx:id="CreateAppointment" layoutX="116.0" layoutY="490.0" mnemonicParsing="false" onAction="#CreateAppointmentMenu" style="-fx-background-color: #3eaf00;" text="Create Appointment" />
       <Button fx:id="UpdateAppointment" layoutX="370.0" layoutY="490.0" mnemonicParsing="false" onAction="#UpdateAppointmentMenu" style="-fx-background-color: #f7fb4b;" text="Update Appointment" />
-      <Button fx:id="DeleteAppointment" layoutX="617.0" layoutY="490.0" mnemonicParsing="false" style="-fx-background-color: #fa001d;" text="Delete Appointment" />
+      <Button fx:id="DeleteAppointment" layoutX="617.0" layoutY="490.0" mnemonicParsing="false" onAction="#DeleteAppointment" style="-fx-background-color: #fa001d;" text="Delete Appointment" />
       <RadioButton fx:id="AllTimesDisplay" layoutX="138.0" layoutY="440.0" mnemonicParsing="false" text="All Times" textFill="WHITE">
          <font>
             <Font size="14.0" />

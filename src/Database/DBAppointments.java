@@ -201,7 +201,7 @@ public class DBAppointments {
      * @throws SQLException Catches SQLException, prints stacktrace, and error message.
      */
     public static boolean deleteAppointment(int appointmentId) throws SQLException {
-        String insertStatement = "DELETE from appointments WHERE Appointment_Id=?";
+        String insertStatement = "DELETE from appointments WHERE Appointment_ID=?";
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), insertStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
