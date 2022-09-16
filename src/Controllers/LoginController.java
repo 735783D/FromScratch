@@ -17,15 +17,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 interface LogActivity{
     public String getFileName();
@@ -39,6 +42,8 @@ public class LoginController implements Initializable {
 
     private ResourceBundle resourceBundle;
 
+
+
     @FXML
     private Button ButtonCancel;
 
@@ -46,32 +51,66 @@ public class LoginController implements Initializable {
     private Button ButtonLogin;
 
     @FXML
+    private Label LabelInfo;
+
+    @FXML
+    private Label LabelLocation;
+
+    @FXML
+    private Label LabelLocationDisplay;
+
+    @FXML
     private Label LabelPassword;
 
     @FXML
-    private Label LabelUsername;
+    private Label LabelTimeZone;
 
     @FXML
-    private Label LabelInfo;
+    private Label LabelTimeZoneDisplay;
+
+    @FXML
+    private Label LabelTitle;
+
+    @FXML
+    private Label LabelUsername;
 
     @FXML
     private TextField TextPassword;
 
     @FXML
     private TextField TextUsername;
+
+    /** Helper function to create login_activity.txt file if it doesn't already exist
+     *  Catches Exception and prints stacktrace.
+     *  Retrieves file name value from Lambda Expression
+     */
+    private void createFile(){
+        try {
+            File newfile = new File(logActivity.getFileName());
+            if (newfile.createNewFile()) {
+                System.out.println("File created:" + newfile.getName());
+            } else {
+                System.out.println("File already exists. Location: "+ newfile.getPath());
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     public void  loginButton(ActionEvent event) throws SQLException {
 
         if (TextUsername.getText().isBlank() == false && TextPassword.getText().isBlank() == false) {
-            //validateLogin();
+
         } else {
             LabelInfo.setText("Please enter username and password.");
         }
 
         String username = TextUsername.getText();
         String password = TextPassword.getText();
+        createFile();
 
-        boolean loginSuccess = DBUsers.checkUsernamePassword(username, password);
-        if(loginSuccess) {
+        boolean validLogin = DBUsers.checkUsernamePassword(username, password);
+        if(validLogin) {
+            loginSuccess();
 
             try {
                 Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -87,7 +126,17 @@ public class LoginController implements Initializable {
                 alert.showAndWait();
             }
 
+        }  else {
+
+        loginFailure();
+
+        if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(resourceBundle.getString("errorDialog"));
+            alert.setContentText(resourceBundle.getString("WrongUsernameOrPassword"));
+            alert.showAndWait();
         }
+    }
 
 
     }
@@ -200,7 +249,22 @@ public class LoginController implements Initializable {
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL location, ResourceBundle resources) {
 
+        resourceBundle = ResourceBundle.getBundle("Language/language", Locale.getDefault());
+
+        if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")){
+
+
+            LabelTitle.setText(resourceBundle.getString("title"));
+            LabelUsername.setText(resourceBundle.getString("username"));
+            LabelPassword.setText(resourceBundle.getString("password"));
+            LabelLocation.setText(resourceBundle.getString("location"));
+            LabelLocationDisplay.setText(resourceBundle.getString("country"));
+            LabelTimeZone.setText(resourceBundle.getString("timezone"));
+            LabelTimeZoneDisplay.setText(String.valueOf(ZoneId.of(TimeZone.getDefault().getID())));
+            ButtonLogin.setText(resourceBundle.getString("login"));
+            ButtonCancel.setText(resourceBundle.getString("cancel"));
+        }
     }
 }

@@ -12,13 +12,17 @@
       <TextField fx:id="TextPassword" layoutX="281.0" layoutY="200.0" />
       <Label fx:id="LabelUsername" layoutX="196.0" layoutY="140.0" text="Username:" textFill="#fff6f6" />
       <Label fx:id="LabelPassword" layoutX="196.0" layoutY="204.0" text="Password:" textFill="WHITE" />
-      <Label alignment="CENTER" layoutX="63.0" layoutY="42.0" prefHeight="58.0" prefWidth="474.0" text="This is the Ultimate Scheduler!" textFill="#fffafa">
+      <Label fx:id="LabelTitle" alignment="CENTER" layoutX="63.0" layoutY="42.0" prefHeight="58.0" prefWidth="474.0" text="This is the Ultimate Scheduler!" textFill="#fffafa">
          <font>
             <Font size="34.0" />
          </font>
       </Label>
       <Button fx:id="ButtonLogin" layoutX="201.0" layoutY="300.0" mnemonicParsing="false" onAction="#loginButton" text="Login" />
       <Button fx:id="ButtonCancel" layoutX="330.0" layoutY="300.0" mnemonicParsing="false" onAction="#cancelButton" text="Cancel" />
-      <Label fx:id="LabelInfo" alignment="CENTER" layoutX="152.0" layoutY="250.0" prefHeight="26.0" prefWidth="294.0" />
+      <Label fx:id="LabelInfo" alignment="CENTER" layoutX="152.0" layoutY="250.0" prefHeight="26.0" prefWidth="294.0" textFill="#fffdfd" />
+      <Label fx:id="LabelLocation" layoutX="391.0" layoutY="353.0" text="Location:" textFill="WHITE" />
+      <Label fx:id="LabelLocationDisplay" layoutX="464.0" layoutY="353.0" text="Location" textFill="WHITE" />
+      <Label id="location-label" fx:id="LabelTimeZone" layoutX="77.0" layoutY="353.0" text="Time Zone:" textFill="WHITE" />
+      <Label id="location-label" fx:id="LabelTimeZoneDisplay" layoutX="152.0" layoutY="353.0" text="Time Zone" textFill="WHITE" />
    </children>
 </AnchorPane>

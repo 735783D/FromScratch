@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.ToggleGroup?>
 <AnchorPane prefHeight="555.0" prefWidth="867.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AppointmentsController">
    <children>
       <TableView fx:id="Appointments" layoutX="14.0" layoutY="72.0" prefHeight="334.0" prefWidth="839.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
@@ -35,21 +36,24 @@
             <Font size="16.0" />
          </font>
       </TextField>
-      <Button fx:id="Search" layoutX="214.0" layoutY="30.0" mnemonicParsing="false" text="Search" />
+      <Button fx:id="Search" layoutX="214.0" layoutY="30.0" mnemonicParsing="false" text="Search" onAction="#SearchAppointments"/>
       <Button fx:id="CreateAppointment" layoutX="116.0" layoutY="490.0" mnemonicParsing="false" onAction="#CreateAppointmentMenu" style="-fx-background-color: #3eaf00;" text="Create Appointment" />
       <Button fx:id="UpdateAppointment" layoutX="370.0" layoutY="490.0" mnemonicParsing="false" onAction="#UpdateAppointmentMenu" style="-fx-background-color: #f7fb4b;" text="Update Appointment" />
       <Button fx:id="DeleteAppointment" layoutX="617.0" layoutY="490.0" mnemonicParsing="false" onAction="#DeleteAppointment" style="-fx-background-color: #fa001d;" text="Delete Appointment" />
-      <RadioButton fx:id="AllTimesDisplay" layoutX="138.0" layoutY="440.0" mnemonicParsing="false" text="All Times" textFill="WHITE">
+       <RadioButton fx:id="AllTimesDisplay" layoutX="138.0" layoutY="440.0" mnemonicParsing="false" text="All Times" textFill="WHITE" onAction="#ViewToggle">
+           <toggleGroup>
+               <ToggleGroup fx:id="ToggleView" />
+           </toggleGroup>
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="MonthDisplay" layoutX="639.0" layoutY="440.0" mnemonicParsing="false" text="Month" textFill="WHITE">
+       <RadioButton fx:id="MonthDisplay" layoutX="639.0" layoutY="440.0" mnemonicParsing="false" text="Month" textFill="WHITE" toggleGroup="$ToggleView" onAction="#ViewToggle">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="WeekDisplay" layoutX="404.0" layoutY="440.0" mnemonicParsing="false" text="Week" textFill="WHITE">
+      <RadioButton fx:id="WeekDisplay" layoutX="404.0" layoutY="440.0" mnemonicParsing="false" text="Week" textFill="WHITE" toggleGroup="$ToggleView" onAction="#ViewToggle">
          <font>
             <Font size="14.0" />
          </font>

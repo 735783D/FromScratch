@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -12,22 +13,25 @@
    <children>
       <Pane fx:id="MainPane" layoutX="78.0" layoutY="76.0" prefHeight="119.0" prefWidth="445.0" style="-fx-background-color: #ffffff;">
          <children>
-            <Button fx:id="CreateReportButtonMain" layoutX="178.0" layoutY="80.0" mnemonicParsing="false" text="Create Report" />
-            <RadioButton fx:id="TypeSelectionRadioButton" layoutX="155.0" layoutY="43.0" mnemonicParsing="false" text="Type" />
-            <RadioButton fx:id="MonthSelectionRadioButton" layoutX="239.0" layoutY="43.0" mnemonicParsing="false" text="Month" />
+            <Button fx:id="CreateReportButtonMain" layoutX="178.0" layoutY="80.0" mnemonicParsing="false" onAction="#ReportByTypeOrMonth" text="Create Report" />
+            <RadioButton fx:id="TypeSelectionRadioButton" layoutX="155.0" layoutY="43.0" mnemonicParsing="false" text="Type">
+               <toggleGroup>
+                  <ToggleGroup fx:id="ReportsToggleTypeMonth" />
+               </toggleGroup></RadioButton>
+            <RadioButton fx:id="MonthSelectionRadioButton" layoutX="239.0" layoutY="43.0" mnemonicParsing="false" text="Month" toggleGroup="$ReportsToggleTypeMonth" />
             <Label fx:id="MainPaneLabel" layoutX="43.0" layoutY="14.0" text="Select the total number of customer appointments by the following:" />
          </children>
       </Pane>
       <Pane fx:id="CustomerIdPane" layoutX="309.0" layoutY="207.0" prefHeight="157.0" prefWidth="214.0" style="-fx-background-color: #ffffff;">
          <children>
-            <Button fx:id="CreateReportButtonCustomerId" layoutX="62.0" layoutY="105.0" mnemonicParsing="false" text="Create Report" />
+            <Button fx:id="CreateReportButtonCustomerId" layoutX="62.0" layoutY="105.0" mnemonicParsing="false" onAction="#ReportByCustomerId" text="Create Report" />
             <ComboBox fx:id="CustomerIdCombo" layoutX="32.0" layoutY="54.0" prefWidth="150.0" />
             <Label fx:id="CustomerIdLabel" layoutX="15.0" layoutY="14.0" text="Schedule selection by Customer ID" />
          </children>
       </Pane>
       <Pane fx:id="ContactIdPane" layoutX="78.0" layoutY="207.0" prefHeight="157.0" prefWidth="214.0" style="-fx-background-color: #ffffff;">
          <children>
-            <Button fx:id="CreateReportButtonContactId" layoutX="62.0" layoutY="104.0" mnemonicParsing="false" text="Create Report" />
+            <Button fx:id="CreateReportButtonContactId" layoutX="62.0" layoutY="104.0" mnemonicParsing="false" onAction="#ReportByContactId" text="Create Report" />
             <ComboBox fx:id="ContactIdCombo" layoutX="32.0" layoutY="54.0" prefWidth="150.0" />
             <Label fx:id="ContactIdLabel" layoutX="20.0" layoutY="14.0" text="Schedule selection by Contact ID" />
          </children>

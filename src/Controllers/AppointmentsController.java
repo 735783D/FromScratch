@@ -2,6 +2,7 @@ package Controllers;
 
 import Database.DBAppointments;
 import Models.Appointment;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,11 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -39,7 +45,7 @@ public class AppointmentsController implements Initializable {
     private TableColumn<Appointment, Integer> ColumnAppointmentID;
 
     @FXML
-    private TableColumn<Appointment, String > ColumnContact;
+    private TableColumn<Appointment, Integer> ColumnContact;
 
     @FXML
     private TableColumn<Appointment, Integer> ColumnCustomerID;
@@ -186,6 +192,67 @@ public class AppointmentsController implements Initializable {
 
     }
 
+    /** Toggle View - All, Week, or Month.
+     * Sets Appointment Table based on Radio Button selected by User.
+     * Catches SQL exceptions and prints stacktrace.
+     * @param event ActionEvent updates Appointment Table when Radio Button is selected
+     */
+    @FXML
+    void ViewToggle(ActionEvent event) {
+
+        if (AllTimesDisplay.isSelected()) {
+            try {
+                appointments = DBAppointments.getAppointments();
+                Appointments.setItems(appointments);
+                Appointments.refresh();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (ToggleView.getSelectedToggle().equals(MonthDisplay)) {
+            try {
+                appointments = DBAppointments.getAppointmentsMonth();
+                Appointments.setItems(appointments);
+                Appointments.refresh();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (ToggleView.getSelectedToggle().equals(WeekDisplay)) {
+            try {
+                appointments = DBAppointments.getAppointmentsWeek();
+                Appointments.setItems(appointments);
+                Appointments.refresh();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /** Updates Appointment Table based on search text
+     * @param event ActionEvent when search button is clicked
+     */
+    @FXML
+    void SearchAppointments(ActionEvent event) {
+        ObservableList<Appointment> updateTable = lookupAppointment(Search.getText());
+        Appointments.setItems(updateTable);
+    }
+
+    /** Helper function for Search Functionality
+     * Gets Appointment List based on Search input
+     * @param input String value of search text
+     * @return ObservableList List of Appointments
+     */
+    private static ObservableList<Appointment> lookupAppointment(String input) {
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+
+        for (Appointment appointment: appointments) {
+            if (appointment.getTitle().contains(input)) {
+                appointmentList.add(appointment);
+            } else if (Integer.toString(appointment.getAppointmentId()).contains(input)) {
+                appointmentList.add(appointment);
+            }
+        }
+        return appointmentList;
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         AllTimesDisplay.setToggleGroup(ToggleView);
@@ -199,15 +266,19 @@ public class AppointmentsController implements Initializable {
             ColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
             ColumnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
             ColumnLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
-            ColumnContact.setCellValueFactory(new PropertyValueFactory<>("contactName"));
+            ColumnContact.setCellValueFactory(new PropertyValueFactory<>("contactId"));
             ColumnType.setCellValueFactory(new PropertyValueFactory<>("type"));
             ColumnStart.setCellValueFactory(new PropertyValueFactory<>("startTime"));
             ColumnEnd.setCellValueFactory(new PropertyValueFactory<>("endTime"));
             ColumnCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             ColumnUserID.setCellValueFactory(new PropertyValueFactory<>("userId"));
 
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        //______________________________________
+
     }
 }

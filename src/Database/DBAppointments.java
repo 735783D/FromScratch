@@ -60,16 +60,19 @@ public class DBAppointments {
     public static ObservableList<Appointment> getAppointmentsMonth() throws SQLException {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
-        LocalDateTime todaysDate = LocalDateTime.now();
-        LocalDateTime lastMonth = todaysDate.minusDays(30);
+//        LocalDateTime todaysDate = LocalDateTime.now();
+//        LocalDateTime lastMonth = todaysDate.minusDays(30);
 
-        String queryStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID WHERE Start < ? AND Start > ?;";
+
+        String queryStatement = "SELECT * from appointments WHERE Start >=  (CURRENT_DATE) + INTERVAL 1 DAY - INTERVAL 1 MONTH AND Start < LAST_DAY(CURRENT_DATE) + INTERVAL 1 DAY;";
+
+
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), queryStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
 
-        preparedStatement.setDate(1, Date.valueOf(todaysDate.toLocalDate()));
-        preparedStatement.setDate(2, Date.valueOf(lastMonth.toLocalDate()));
+//        preparedStatement.setDate(1, Date.valueOf(todaysDate.toLocalDate()));
+//        preparedStatement.setDate(2, Date.valueOf(lastMonth.toLocalDate()));
 
         try {
             preparedStatement.execute();
@@ -108,16 +111,19 @@ public class DBAppointments {
     public static ObservableList<Appointment> getAppointmentsWeek() throws SQLException {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
-        LocalDateTime todaysDate = LocalDateTime.now();
-        LocalDateTime lastWeek = todaysDate.minusDays(7);
+//        LocalDateTime todaysDate = LocalDateTime.now();
+//        LocalDateTime lastWeek = todaysDate.minusDays(7);
 
-        String queryStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID WHERE Start < ? AND Start > ?;";
+        //String queryStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID WHERE Start < ? AND Start > ?;";
+
+        String queryStatement = "SELECT * from appointments WHERE YEARWEEK(`Start`, 1) = YEARWEEK(CURDATE(), 0);";
+
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), queryStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
 
-        preparedStatement.setDate(1, Date.valueOf(todaysDate.toLocalDate()));
-        preparedStatement.setDate(2, Date.valueOf(lastWeek.toLocalDate()));
+//        preparedStatement.setDate(1, Date.valueOf(todaysDate.toLocalDate()));
+//        preparedStatement.setDate(2, Date.valueOf(lastWeek.toLocalDate()));
 
         try {
             preparedStatement.execute();
