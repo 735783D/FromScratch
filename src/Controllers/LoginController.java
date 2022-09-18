@@ -133,7 +133,7 @@ public class LoginController implements Initializable {
         if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(resourceBundle.getString("errorDialog"));
-            alert.setContentText(resourceBundle.getString("WrongUsernameOrPassword"));
+            alert.setContentText(resourceBundle.getString("incorrectUsernamePassword"));
             alert.showAndWait();
         }
     }

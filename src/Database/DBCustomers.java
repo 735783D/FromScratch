@@ -19,7 +19,7 @@ public class DBCustomers {
     public static ObservableList<Customer> getCustomers() throws SQLException {
         ObservableList<Customer> customers = FXCollections.observableArrayList();
 
-        String searchStatement = "SELECT * FROM customers AS c INNER JOIN first_level_divisions AS d ON c.Division = d.Division INNER JOIN countries AS co ON co.Country_ID=d.Country_ID;";
+        String searchStatement = "SELECT * FROM customers AS c INNER JOIN first_level_divisions AS d ON c.Division_ID = d.Division_ID INNER JOIN countries AS co ON co.Country_ID=d.Country_ID;";
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), searchStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
