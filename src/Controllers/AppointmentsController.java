@@ -224,7 +224,7 @@ public class AppointmentsController implements Initializable {
             }
         } else if (ToggleView.getSelectedToggle().equals(MonthDisplay)) {
             try {
-                appointments = DBAppointments.getAppointmentsMonth();
+                appointments = DBAppointments.getAppointmentsByMonth();
                 Appointments.setItems(appointments);
                 Appointments.refresh();
             } catch (SQLException e) {
@@ -232,7 +232,7 @@ public class AppointmentsController implements Initializable {
             }
         } else if (ToggleView.getSelectedToggle().equals(WeekDisplay)) {
             try {
-                appointments = DBAppointments.getAppointmentsWeek();
+                appointments = DBAppointments.getAppointmentsByWeek();
                 Appointments.setItems(appointments);
                 Appointments.refresh();
             } catch (SQLException e) {

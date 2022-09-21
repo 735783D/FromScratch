@@ -8,14 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/** This class contains SQL operations made on the Country Collection.*/
-public class CountryQuery {
+/** This class is the SQL connection to the countries table for data retrieval. */
+public class DBCountry {
 
-    /** This method gets a list of Country Objects
-     * @return ObservableList List containing Country Objects
-     * @throws SQLException Catches SQLException and prints stacktrace.
-     */
-    public static ObservableList<Country> getCountries() throws SQLException {
+    /** This method retrieves a list of all Country information for usage in the application from the database.
+     * @return Returns an ObservableList List containing Country Objects
+     * @throws SQLException Catches SQLException, prints stacktrace, and error message for debugging. */
+       public static ObservableList<Country> getCountries() throws SQLException {
         ObservableList<Country> countries = FXCollections.observableArrayList();
 
         String searchStatement = "SELECT * FROM countries;";
@@ -27,8 +26,7 @@ public class CountryQuery {
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
 
-            // Forward scroll resultSet
-            while (resultSet.next()) {
+          while (resultSet.next()) {
 
                 Country newCountry = new Country(
                         resultSet.getInt("Country_ID"),
@@ -44,12 +42,11 @@ public class CountryQuery {
         }
     }
 
-    /** This method gets a Country Object by Country Name
+    /** This method retrieves country information by the country's name in the database.
      * @param country String value of Country Name
-     * @return Country Country Object
-     * @throws SQLException Catches SQLException and prints stacktrace.
-     */
-    public static Country getCountryId(String country) throws SQLException {
+     * @return Country named object.
+     * @throws SQLException Catches SQLException, prints stacktrace, and error message for debugging. */
+    public static Country getCountryName(String country) throws SQLException {
 
         String queryStatement = "SELECT * FROM countries WHERE Country=?";
 

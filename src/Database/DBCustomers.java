@@ -9,13 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/** This class contains SQL operations made on the Customers Collection.*/
+/** This class is the SQL connection to the customers table that does the data CRUD stuff. */
 public class DBCustomers {
 
-    /** This method gets all Customers and First-Level-Division Objects joined by the Division ID
-     * @return ObservableList Returns list of Customers
-     * @throws SQLException Catches SQLException, prints stacktrace, and error message.
-     */
+    /** This method retrieves all the Customers and First-Level-Division information joined on the Division ID.
+     * @return Returns ObservableList list of Customers
+     * @throws SQLException Catches SQLException, prints stacktrace, and error message for debugging. */
     public static ObservableList<Customer> getCustomers() throws SQLException {
         ObservableList<Customer> customers = FXCollections.observableArrayList();
 
@@ -28,7 +27,6 @@ public class DBCustomers {
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
 
-            // Forward scroll resultSet
             while (resultSet.next()) {
 
                 Customer newCustomer = new Customer(
@@ -51,20 +49,17 @@ public class DBCustomers {
         }
     }
 
-    /**
-     * This method creates a new Customer
-     *
-     * @param name       String value of Customer Name
-     * @param address    String value of Customer Address
+    /** This method creates a new Customer in the database from the information provided by the user.
+     * @param name String value of Customer Name
+     * @param address String value of Customer Address
      * @param postalCode String value of Customer Postal Code
-     * @param phone      String value of Customer Phone Number
-     * @param division  String value of Division Name
-     * @return Boolean Returns true if the customer was successfully created and false if the customer creation failed
-     * @throws SQLException Catches SQLException, prints stacktrace, and error message.
-     */
+     * @param phone String value of Customer Phone Number
+     * @param division String value of Division Name
+     * @return Returns Boolean true if the customer was successfully created and false if not.
+     * @throws SQLException Catches SQLException, prints stacktrace, and error message for debugging. */
     public static boolean createCustomer(String name, String address, String postalCode, String phone, String division) throws SQLException {
 
-        Division newDivision = DivisionQuery.getDivisionId(division);
+        Division newDivision = DBDivision.getDivisionName(division);
 
         String insertStatement = "INSERT INTO customers(Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (?, ?, ?, ?, ?)";
 
@@ -75,8 +70,6 @@ public class DBCustomers {
         preparedStatement.setString(2, address);
         preparedStatement.setString(3, postalCode);
         preparedStatement.setString(4, phone);
-       // preparedStatement.setString(5, division);
-        //preparedStatement.setString(6, country);
         preparedStatement.setInt(5, newDivision.getDivisionId());
 
         try {
@@ -84,7 +77,7 @@ public class DBCustomers {
             if (preparedStatement.getUpdateCount() > 0) {
                 System.out.println("Rows affected: " + preparedStatement.getUpdateCount());
             } else {
-                System.out.println("No change");
+                System.out.println("No change has occurred.");
             }
             return true;
         } catch (Exception e) {
@@ -94,18 +87,17 @@ public class DBCustomers {
         }
     }
 
-    /** This method updates an existing Customer by Customer ID
+    /** This method updates an existing Customer by the specified Customer ID.
      * @param customerId Int value of Customer ID
      * @param name String value of Customer Name
      * @param address String value of Customer Address
      * @param postalCode String value of Customer Postal Code
      * @param phone String value of Customer Phone Number
      * @param division String value of Division Name
-     * @return Boolean Returns true if the customer was successfully updated and false if the customer update failed
-     * @throws SQLException Catches SQLException, prints stacktrace, and error message.
-     */
+     * @return Returns Boolean true if the customer was successfully updated and false if not
+     * @throws SQLException Catches SQLException, prints stacktrace, and error message for debugging. */
     public static boolean updateCustomer(int customerId, String name, String address, String postalCode, String phone, String division, String value) throws SQLException {
-        Division newDivision = DivisionQuery.getDivisionId(division);
+        Division newDivision = DBDivision.getDivisionName(division);
 
         String insertStatement = "UPDATE customers SET Customer_Name=?, Address=?, Postal_Code=?, Phone=?, Division_ID=? WHERE Customer_ID=?";
 
@@ -124,7 +116,7 @@ public class DBCustomers {
             if (preparedStatement.getUpdateCount() > 0) {
                 System.out.println("Rows affected: " + preparedStatement.getUpdateCount());
             } else {
-                System.out.println("No change");
+                System.out.println("No change has occurred.");
             }
             return true;
         } catch (Exception e) {
@@ -133,11 +125,11 @@ public class DBCustomers {
         }
     }
 
-    /** This method deletes an existing Customer
+    /** This method deletes an existing Customer by specified customer ID.
      * @param customerId Int of Customer ID
-     * @return Boolean Returns true if the customer was successfully deleted and false if the customer deletion failed
-     * @throws SQLException Catches SQLException, prints stacktrace, and error message.
-     */
+     * @return Returns Boolean true if the customer was successfully deleted and false if not.
+     * @throws SQLException Catches SQLException, prints stacktrace, and error message for debugging. */
+
     public static boolean deleteCustomer(int customerId) throws SQLException {
         String insertStatement = "DELETE from customers WHERE Customer_Id=?";
 
@@ -151,7 +143,7 @@ public class DBCustomers {
             if (preparedStatement.getUpdateCount() > 0) {
                 System.out.println("Rows affected: " + preparedStatement.getUpdateCount());
             } else {
-                System.out.println("No change");
+                System.out.println("No change has occurred.");
             }
             return true;
         } catch (Exception e) {

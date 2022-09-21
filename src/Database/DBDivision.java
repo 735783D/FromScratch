@@ -9,13 +9,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/** This class contains SQL operations made on the Divisions Collection.*/
-public class DivisionQuery {
+/** This class is the SQL connection to the first_level_divisions table for data retrieval. */
+public class DBDivision {
 
-    /** This method gets a list of Divisions
-     * @return ObservableList List containing Division Objects
-     * @throws SQLException Catches SQLException and prints stacktrace.
-     */
+    /** This method retrieves a list of all Division information in the database.
+     * @return Returns an ObservableList List containing all the  Division Objects.
+     * @throws SQLException Catches SQLException, prints stacktrace, and error message for debugging. */
+
     public static ObservableList<Division> getDivisions() throws SQLException {
         ObservableList<Division> divisions = FXCollections.observableArrayList();
 
@@ -29,13 +29,11 @@ public class DivisionQuery {
             ResultSet resultSet = preparedStatement.getResultSet();
 
             while (resultSet.next()) {
-
                 Division newDivision = new Division(
                         resultSet.getInt("Division_ID"),
                         resultSet.getString("Division"),
                         resultSet.getInt("Country_ID")
                 );
-
                 divisions.add(newDivision);
             }
             return divisions;
@@ -45,12 +43,11 @@ public class DivisionQuery {
         }
     }
 
-    /** This method gets a Division by the Division Name
+    /** This method retrieves a Division by the Divisions Name
      * @param division String value of Division Name
-     * @return Division Division Object
-     * @throws SQLException Catches SQLException and prints stacktrace.
-     */
-    public static Division getDivisionId(String division) throws SQLException {
+     * @return Returns Division Object
+     * @throws SQLException Catches SQLException, prints stacktrace, and error message for debugging. */
+    public static Division getDivisionName(String division) throws SQLException {
         String queryStatement = "SELECT * FROM first_level_divisions WHERE Division=?";
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), queryStatement);
@@ -70,20 +67,19 @@ public class DivisionQuery {
                 );
                 return newDivision;
             }
-
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
         return null;
     }
 
-    /** This method gets a List of Divisions by Country
+    /** This method retrieves a List of Divisions base on Country.
      * @param country String value of Country Name
-     * @return ObservableList List containing Division Objects
-     * @throws SQLException Catches SQLException and prints stacktrace.
-     */
+     * @return Returns an ObservableList List containing Division Objects
+     * @throws SQLException Catches SQLException, prints stacktrace, and error message for debugging. */
+
     public static ObservableList<Division> getDivisionsByCountry(String country) throws SQLException {
-        Country newCountry = CountryQuery.getCountryId(country);
+        Country newCountry = DBCountry.getCountryName(country);
 
         ObservableList<Division> divisions = FXCollections.observableArrayList();
 
@@ -98,7 +94,6 @@ public class DivisionQuery {
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
 
-            // Forward scroll resultSet
             while (resultSet.next()) {
 
                 Division newDivision = new Division(
@@ -106,7 +101,6 @@ public class DivisionQuery {
                         resultSet.getString("Division"),
                         resultSet.getInt("Country_ID")
                 );
-
                 divisions.add(newDivision);
             }
             return divisions;

@@ -1,6 +1,6 @@
 package Models;
 
-/**This class is an object constructor used to create Contact objects and get/set their values.*/
+/** This class is an object constructor used to create contact objects in the database and get/set their values.*/
 public class Contact {
 
     private int contactId;
@@ -16,37 +16,37 @@ public class Contact {
         this.contactName = contactName;
         this.contactEmail = contactEmail;
     }
-    /** Gets Contact ID
+    /** Gets Contact ID parameter from database.
      * @return contactId Integer value of Contact ID*/
     public int getContactId() {
         return contactId;
     }
 
-    /** Sets Contact ID
+    /** Sets Contact ID parameter in database.
      * @param contactId Integer value of Contact ID*/
     public void setContactId(int contactId) {
         this.contactId = contactId;
     }
 
-    /** Gets Contact Name
+    /** Gets Contact Name parameter from database.
      * @return contactName String value of Contact Name*/
     public String getContactName() {
         return contactName;
     }
 
-    /** Sets Contact Name
+    /** Sets Contact Name parameter in database.
      * @param contactName String value of Contact Name*/
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
 
-    /** Gets Contact Email
+    /** Gets Contact Email parameter from database.
      * @return contactEmail String value of Contact Email*/
     public String getContactEmail() {
         return contactEmail;
     }
 
-    /** Sets Contact Email
+    /** Sets Contact Email parameter in database.
      * @param contactEmail String value of Contact Email*/
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;

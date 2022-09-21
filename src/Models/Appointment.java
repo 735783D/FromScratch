@@ -3,7 +3,7 @@ package Models;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**This class is an object constructor used to create Appointment objects and get/set their values.*/
+/** This class is an object constructor used to create appointment objects in the database and get/set their values.*/
 public class Appointment {
     private int appointmentId;
     private String title;
@@ -62,157 +62,157 @@ public class Appointment {
         this.contactName = contactName;
     }
 
-    /** Gets Appointment ID
+    /** Gets Appointment ID parameter from database.
      * @return appointmentId Integer value of Appointment ID*/
     public int getAppointmentId() {
         return appointmentId;
     }
 
-    /** Sets Appointment ID
+    /** Sets Appointment ID parameter in database.
      * @param appointmentId Integer value of Appointment ID*/
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }
 
-    /** Gets Appointment Title
+    /** Gets Appointment Title parameter from database.
      * @return title String value of Appointment Name */
     public String getTitle() {
         return title;
     }
 
-    /** Sets Appointment Title
+    /** Sets Appointment Title parameter in database.
      * @param title String value of Appointment Title*/
     public void setTitle(String title) {
         this.title = title;
     }
 
-    /** Gets Appointment Description
+    /** Gets Appointment Description parameter from database.
      * @return description String value of Appointment Description */
     public String getDescription() {
         return description;
     }
 
-    /** Sets Appointment Description
+    /** Sets Appointment Description parameter in database.
      * @param description String value of Appointment Description*/
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /** Gets Appointment Location
+    /** Gets Appointment Location parameter from database.
      * @return location String value of Appointment Location */
     public String getLocation() {
         return location;
     }
 
-    /** Sets Appointment Location
+    /** Sets Appointment Location parameter in database.
      * @param location String value of Appointment Location*/
     public void setLocation(String location) {
         this.location = location;
     }
 
-    /** Gets Appointment Type
+    /** Gets Appointment Type parameter from database.
      * @return type String value of Appointment Type */
     public String getType() {
         return type;
     }
 
-    /** Sets Appointment Type
+    /** Sets Appointment Type parameter in database.
      * @param type String value of Appointment Type*/
     public void setType(String type) {
         this.type = type;
     }
 
-    /** Gets Start Date
+    /** Gets Start Date parameter from database.
      * @return startDate LocalDate value of Appointment Start Date */
     public LocalDate getStartDate() {
         return startDate;
     }
 
-    /** Sets Appointment Start Date
+    /** Sets Appointment Start Date parameter in database.
      * @param startDate LocalDate value of Appointment Start Date*/
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    /** Gets Start Time
+    /** Gets Start Time parameter from database.
      * @return startTime LocalDateTime value of Appointment Start Time */
     public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    /** Sets Appointment Start Time
+    /** Sets Appointment Start Time parameter in database.
      * @param startTime LocalDateTime value of Appointment Start Time*/
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    /** Gets End Date
+    /** Gets End Date parameter from database.
      * @return endDate LocalDate value of Appointment End Date */
     public LocalDate getEndDate() {
         return endDate;
     }
 
-    /** Sets Appointment End Date
+    /** Sets Appointment End Date parameter in database.
      * @param endDate LocalDate value of Appointment End Date*/
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
-    /** Gets End Time
+    /** Gets End Time parameter from database.
      * @return endTime LocalDateTime value of Appointment End Time */
     public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    /** Sets Appointment End Time
+    /** Sets Appointment End Time parameter in database.
      * @param endTime LocalDateTime value of Appointment End Time*/
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
-    /** Gets Customer ID
+    /** Gets Customer ID parameter from database.
      * @return customerId Integer value of Customer ID*/
     public int getCustomerId() {
         return customerId;
     }
 
-    /** Sets Customer ID
+    /** Sets Customer ID parameter in database.
      * @param customerId Integer value of Customer ID*/
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
-    /** Gets User ID
+    /** Gets User ID parameter from database.
      * @return userId Integer value of User ID*/
     public int getUserId() {
         return userId;
     }
 
-    /** Sets User ID
+    /** Sets User ID parameter in database.
      * @param userId Integer value of User ID*/
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    /** Gets Contact ID
+    /** Gets Contact ID parameter from database.
      * @return contactId Integer value of Contact ID*/
     public int getContactId() {
         return contactId;
     }
 
-    /** Sets Contact ID
+    /** Sets Contact ID parameter in database.
      * @param contactId Integer value of Contact ID*/
     public void setContactId(int contactId) {
         this.contactId = contactId;
     }
 
-    /** Gets Contact Name
+    /** Gets Contact Name parameter from database.
      * @return contactName String value of Contact Name */
     public String getContactName() {
         return contactName;
     }
 
-    /** Sets Contact Name
+    /** Sets Contact Name parameter in database.
      * @param contactName String value of Contact Name*/
     public void setContactName(String contactName) {
         this.contactName = contactName;

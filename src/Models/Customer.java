@@ -1,6 +1,6 @@
 package Models;
 
-/**This class is an object constructor used to create Customer objects and get/set their values.*/
+/** This class is an object constructor used to create customer objects in the database and get/set their values.*/
 public class Customer {
     private int customerId;
     private String customerName;
@@ -38,97 +38,97 @@ public class Customer {
         this.divisionId = divisionId;
     }
 
-    /** Gets Customer ID
+    /** Gets Customer ID parameter from database.
      * @return customerId Integer value of Customer ID*/
     public int getCustomerId() {
         return customerId;
     }
 
-    /** Sets Customer ID
+    /** Sets Customer ID parameter in database.
      * @param customerId Integer value of Customer ID*/
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
-    /** Gets Customer Name
+    /** Gets Customer Name parameter from database.
      * @return customerName String value of Customer Name */
     public String getCustomerName() {
         return customerName;
     }
 
-    /** Sets Customer Name
+    /** Sets Customer Name parameter in database.
      * @param customerName String value of Customer Name*/
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
 
-    /** Gets Address
+    /** Gets Address parameter from database.
      * @return address String value of Address */
     public String getAddress() {
         return address;
     }
 
-    /** Sets Address
+    /** Sets Address parameter in database.
      * @param address String value of Address*/
     public void setAddress(String address) {
         this.address = address;
     }
 
-    /** Gets Postal Code
+    /** Gets Postal Code parameter from database.
      * @return postalCode String value of Postal Code */
     public String getPostalCode() {
         return postalCode;
     }
 
-    /** Sets Postal Code
+    /** Sets Postal Code parameter in database.
      * @param postalCode String value of Postal Code*/
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
-    /** Gets Phone Number
+    /** Gets Phone Number parameter from database.
      * @return phoneNumber String value of Phone Number */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    /** Sets Phone Number
+    /** Sets Phone Number parameter in database.
      * @param phoneNumber String value of Phone Number*/
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    /** Gets Division
+    /** Gets Division parameter from database.
      * @return division String value of Division */
     public String getDivision() {
         return division;
     }
 
-    /** Sets Division Name
+    /** Sets Division Name parameter in database.
      * @param division String value of Division Name*/
     public void setDivision(String division) {
         this.division = division;
     }
 
-    /** Gets Country Name
+    /** Gets Country Name parameter from database.
      * @return country String value of Country Name */
     public String getCountry() {
         return country;
     }
 
-    /** Sets Country Name
+    /** Sets Country Name parameter in database.
      * @param country String value of Country Name*/
     public void setCountry(String country) {
         this.country = country;
     }
 
-    /** Gets Division ID
+    /** Gets Division ID parameter from database.
      * @return divisionId Integer value of Division ID*/
     public int getDivisionId() {
         return divisionId;
     }
 
-    /** Sets Division ID
+    /** Sets Division ID parameter in database.
      * @param divisionId Integer value of Division ID*/
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;

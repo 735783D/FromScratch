@@ -1,8 +1,8 @@
 package Controllers;
 
-import Database.CountryQuery;
+import Database.DBCountry;
 import Database.DBCustomers;
-import Database.DivisionQuery;
+import Database.DBDivision;
 import Models.Country;
 import Models.Customer;
 import Models.Division;
@@ -183,7 +183,7 @@ public class UpdateCustomersController implements Initializable {
         ObservableList<String> countryList = FXCollections.observableArrayList();
 
         try {
-            ObservableList<Country> countries = CountryQuery.getCountries();;
+            ObservableList<Country> countries = DBCountry.getCountries();;
             if (countries != null) {
                 for (Country country: countries) {
                     countryList.add(country.getCountry());
@@ -201,7 +201,7 @@ public class UpdateCustomersController implements Initializable {
         ObservableList<String> divisionList = FXCollections.observableArrayList();
 
         try {
-            ObservableList<Division> divisions = DivisionQuery.getDivisions();;
+            ObservableList<Division> divisions = DBDivision.getDivisions();;
             if (divisions != null) {
                 for (Division division: divisions) {
                     divisionList.add(division.getDivision());
@@ -221,7 +221,7 @@ public class UpdateCustomersController implements Initializable {
     void SelectCountry(ActionEvent event) {
         ObservableList<String> divisionList = FXCollections.observableArrayList();
         try {
-            ObservableList<Division> divisions = DivisionQuery.getDivisionsByCountry(CountryBox.getSelectionModel().getSelectedItem());
+            ObservableList<Division> divisions = DBDivision.getDivisionsByCountry(CountryBox.getSelectionModel().getSelectedItem());
             if (divisions != null) {
                 for (Division division: divisions) {
                     divisionList.add(division.getDivision());

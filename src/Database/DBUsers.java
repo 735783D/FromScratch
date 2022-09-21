@@ -8,15 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/** This class contains SQL operations made on the Users Collection.*/
+/** This class allows the users table to be queried for login validation. */
 public class DBUsers {
 
-    /** This method checks if the username and password are valid
+    /** This method checks if the username and password are in the database as specified.
      * @param username Username
      * @param password Password
-     * @return Boolean Returns true if valid and false if not valid
-     * @throws SQLException Catches SQLException and prints stacktrace.
-     */
+     * @return Returns Boolean true if valid and false if not.
+     * @throws SQLException Catches SQLException, prints stacktrace, and error message for debugging. */
+
     public static boolean checkUsernamePassword(String username, String password) throws SQLException {
         String searchStatement = "SELECT * FROM users WHERE User_Name=? AND Password=?";
 
@@ -36,10 +36,10 @@ public class DBUsers {
         }
     }
 
-    /** This method gets all Users from the User Collection
-     * @return ObservableList Returns list of Users
-     * @throws SQLException Catches SQLException and prints stacktrace.
-     */
+    /** This method gets all Users information from the users table in the database.
+     * @return Returns an ObservableList list of users
+     * @throws SQLException Catches SQLException, prints stacktrace, and error message for debugging. */
+
     public static ObservableList<User> getUsers() throws SQLException {
         ObservableList<User> users = FXCollections.observableArrayList();
 
