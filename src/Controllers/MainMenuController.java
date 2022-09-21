@@ -14,7 +14,8 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainMenuController implements Initializable {
+/** Main Menu Controller - This is where the journey begins! */
+public class MainMenuController implements  Initializable{
 
     @FXML
     private Button ButtonAppointments;
@@ -31,6 +32,9 @@ public class MainMenuController implements Initializable {
     @FXML
     private Label LabelMenuTitle;
 
+    /** Takes the user to the Customers screen.
+     *  Catches Exception, throws alert, and prints a stacktrace to the console for debugging.
+     * @param event ActionEvent takes user to Customers Screen when clicked. */
     @FXML
     void CustomersMenu(ActionEvent event){
         try {
@@ -48,6 +52,9 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /** Takes the user to the Appointments screen.
+     *  Catches Exception, throws alert, and prints a stacktrace to the console for debugging.
+     * @param event ActionEvent takes user to Appointments Screen when clicked. */
     @FXML
     void AppointmentsMenu(ActionEvent event){
         try {
@@ -65,11 +72,14 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /** Takes the user to the Reports screen.
+     *  Catches Exception, throws alert, and prints a stacktrace to the console for debugging.
+     * @param event ActionEvent takes user to Reports Screen when clicked. */
     @FXML
     void ReportsMenu(ActionEvent event){
         try {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            Parent scene = FXMLLoader.load(getClass().getResource("/Views/Reports.fxml"));
+            Parent scene = FXMLLoader.load(getClass().getResource("/Views/ReportsScreen.fxml"));
             stage.setScene(new Scene(scene));
             stage.setTitle("Reports!!!");
             stage.show();
@@ -81,10 +91,13 @@ public class MainMenuController implements Initializable {
             alert.showAndWait();
         }
     }
+
+
+    /** This method logs the user out when the Logout button is clicked.
+     *  Catches Exception, throws alert, and prints a stacktrace to the console for debugging.
+     * @param event ActionEvent Logs user out of application when logout button is clicked. */
     @FXML
     void Logout(ActionEvent event) {
-
-
         try {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             Parent scene = FXMLLoader.load(getClass().getResource("/Views/Login.fxml"));
@@ -100,8 +113,11 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**This method initializes reports functionality.
+     * Catches Exception, throws alert, and prints stacktrace for debugging.
+     * @param location This is the locator for relative paths for navigation.
+     * @param resources This is the resource bundle that localizes the root objects. */
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL location, ResourceBundle resources) {}
 
-    }
 }

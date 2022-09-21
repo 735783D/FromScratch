@@ -14,29 +14,29 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/** This is the controller to display and do the CRUD functions on the appointments. */
 public class AppointmentsController implements Initializable {
+
+    /** This is the observable list that shows the appointments. */
     static ObservableList<Appointment> appointments;
     @FXML
     private RadioButton AllTimesDisplay;
-
     @FXML
     private TableView<Appointment> Appointments;
 
     @FXML
     private Label AppointmentsTitle;
-
-    @FXML
-    private TextField ApptSearch;
 
     @FXML
     private Button Cancel;
@@ -54,13 +54,13 @@ public class AppointmentsController implements Initializable {
     private TableColumn<Appointment, String> ColumnDescription;
 
     @FXML
-    private TableColumn<Appointment, String > ColumnEnd;
+    private TableColumn<Appointment, LocalDateTime > ColumnEnd;
 
     @FXML
     private TableColumn<Appointment, String > ColumnLocation;
 
     @FXML
-    private TableColumn<Appointment, String> ColumnStart;
+    private TableColumn<Appointment, LocalDateTime> ColumnStart;
 
     @FXML
     private TableColumn<Appointment, String> ColumnTitle;
@@ -84,9 +84,6 @@ public class AppointmentsController implements Initializable {
     private RadioButton MonthDisplay;
 
     @FXML
-    private Button Search;
-
-    @FXML
     private Button UpdateAppointment;
 
     @FXML
@@ -96,23 +93,37 @@ public class AppointmentsController implements Initializable {
     private ToggleGroup ToggleView;
 
 
-
+    /** This is the action event handler that takes you back to the main menu.
+     * @param event ActionEvent that takes the user back to the main menu.
+     * Lambda expression was created to combine view movement and alerting in one expression.
+     */
     public void BackToMain(ActionEvent event){
-        try {
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            Parent scene = FXMLLoader.load(getClass().getResource("/Views/MainMenu.fxml"));
-            stage.setScene(new Scene(scene));
-            stage.setTitle("Main Menu!!");
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setContentText("Load Screen Error.");
-            alert.showAndWait();
-        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Alert!");
+        alert.setHeaderText("You sure?");
+        alert.setContentText("You can always look more...");
+
+        /** Lambda Expression */
+        alert.showAndWait().ifPresent((response -> {
+            if (response == ButtonType.OK) {
+                System.out.println("Okay. Have fun!");
+                Parent main = null;
+                try {
+                    Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                    Parent scene = FXMLLoader.load(getClass().getResource("/Views/MainMenu.fxml"));
+                    stage.setScene(new Scene(scene));
+                    stage.setTitle("Main");
+                    stage.show();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }));
     }
 
+    /** This is the action event handler that takes you to the create appointment menu.
+     * @param event ActionEvent that takes the user back to the appointment creation menu.
+     */
     public void CreateAppointmentMenu(ActionEvent event){
         try {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -129,7 +140,9 @@ public class AppointmentsController implements Initializable {
         }
     }
 
-
+    /** This is the action event handler that takes you to the update appointment menu.
+     * @param event ActionEvent that takes the user back to the ap menu.
+     */
     public void UpdateAppointmentMenu(ActionEvent event){
         UpdateAppointmentController.receiveSelectedAppointment(Appointments.getSelectionModel().getSelectedItem());
 
@@ -148,8 +161,9 @@ public class AppointmentsController implements Initializable {
         }
     }
 
-    /** Deletes appointment when clicked.
-     * Appointment must be selected prior to clicking Delete Appointment button or it will throw an error dialog.
+    /**
+     * This handler connects to the delete button and allows for the deletion of
+     * an appointment when it is selected in the display.
      * Catches Exception, throws alert, and prints stacktrace.
      * @param event ActionEvent deletes appointment when clicked
      */
@@ -193,8 +207,8 @@ public class AppointmentsController implements Initializable {
     }
 
     /** Toggle View - All, Week, or Month.
-     * Sets Appointment Table based on Radio Button selected by User.
-     * Catches SQL exceptions and prints stacktrace.
+     * The radio buttons dictate the display type.
+     * Catches SQL exceptions and prints stacktrace for debugging.
      * @param event ActionEvent updates Appointment Table when Radio Button is selected
      */
     @FXML
@@ -227,34 +241,13 @@ public class AppointmentsController implements Initializable {
         }
     }
 
-    /** Updates Appointment Table based on search text
-     * @param event ActionEvent when search button is clicked
+    /**This method is the initializer for the Appointments view.
+     * It catches a SQL exception and prints it to the console.
+     * @param location The location to resolve the relative paths.
+     * @param resources The resources that will localize the initialization.
      */
-    @FXML
-    void SearchAppointments(ActionEvent event) {
-        ObservableList<Appointment> updateTable = lookupAppointment(Search.getText());
-        Appointments.setItems(updateTable);
-    }
-
-    /** Helper function for Search Functionality
-     * Gets Appointment List based on Search input
-     * @param input String value of search text
-     * @return ObservableList List of Appointments
-     */
-    private static ObservableList<Appointment> lookupAppointment(String input) {
-        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
-
-        for (Appointment appointment: appointments) {
-            if (appointment.getTitle().contains(input)) {
-                appointmentList.add(appointment);
-            } else if (Integer.toString(appointment.getAppointmentId()).contains(input)) {
-                appointmentList.add(appointment);
-            }
-        }
-        return appointmentList;
-    }
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL location, ResourceBundle resources) {
         AllTimesDisplay.setToggleGroup(ToggleView);
         WeekDisplay.setToggleGroup(ToggleView);
         MonthDisplay.setToggleGroup(ToggleView);
@@ -273,12 +266,10 @@ public class AppointmentsController implements Initializable {
             ColumnCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             ColumnUserID.setCellValueFactory(new PropertyValueFactory<>("userId"));
 
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        //______________________________________
 
     }
 }

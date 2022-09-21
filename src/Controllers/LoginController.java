@@ -11,10 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -25,33 +22,31 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.Date;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.TimeZone;
 
-interface LogActivity{
+interface A {
     public String getFileName();
 }
 
+/** Controller for login screen
+ *  Lambda Expression in this section was created to pass information to a log file for attempts passing or failing.
+ *  This allows for better re-usability and reduces the amount of code in application. */
+
 public class LoginController implements Initializable {
 
-    LogActivity logActivity = () -> {
+    A loginAttempts = () -> {
         return "login_activity.txt";
     };
 
     private ResourceBundle resourceBundle;
-
-
 
     @FXML
     private Button ButtonCancel;
 
     @FXML
     private Button ButtonLogin;
-
-    @FXML
-    private Label LabelInfo;
 
     @FXML
     private Label LabelLocation;
@@ -80,69 +75,73 @@ public class LoginController implements Initializable {
     @FXML
     private TextField TextUsername;
 
-    /** Helper function to create login_activity.txt file if it doesn't already exist
-     *  Catches Exception and prints stacktrace.
-     *  Retrieves file name value from Lambda Expression
-     */
-    private void createFile(){
+    /** This method creates a file named login_activity.txt file if it doesn't already exist.
+     *  Catches Exception and prints stacktrace for debugging.
+     *  Retrieves file name value from the Lambda Expression at the top of the file. */
+    private void createLogDataFile(){
         try {
-            File newfile = new File(logActivity.getFileName());
+            File newfile = new File(loginAttempts.getFileName());
             if (newfile.createNewFile()) {
-                System.out.println("File created:" + newfile.getName());
+                System.out.println("Log created:" + newfile.getName());
             } else {
-                System.out.println("File already exists. Location: "+ newfile.getPath());
+                System.out.println("Log currently exists. Log location: "+ newfile.getPath());
             }
         } catch (IOException e){
             e.printStackTrace();
         }
     }
+
+    /** This method enables the user to login
+     *  Calls assistance methods to create a log activity text file if one isn't present and validates that the login was either successful or not.
+     *  Catches Exception, throws alert, and prints stacktrace to the console for debugging.
+     * @param event ActionEvent Logs into application when login button is clicked if credentials are in the database. */
     public void  loginButton(ActionEvent event) throws SQLException {
 
-        if (TextUsername.getText().isBlank() == false && TextPassword.getText().isBlank() == false) {
+        if (TextUsername.getText().isBlank() == false && TextPassword.getText().isBlank() == false) {}
 
-        } else {
-            LabelInfo.setText("Please enter username and password.");
-        }
 
         String username = TextUsername.getText();
         String password = TextPassword.getText();
-        createFile();
+        createLogDataFile();
 
         boolean validLogin = DBUsers.checkUsernamePassword(username, password);
         if(validLogin) {
-            loginSuccess();
+            successfulLogin();
 
             try {
                 Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 Parent scene = FXMLLoader.load(getClass().getResource("/Views/MainMenu.fxml"));
                 stage.setScene(new Scene(scene));
-                stage.setTitle("Login");
+                stage.setTitle("Main Menu!!");
                 stage.show();
             } catch (Exception e) {
                 e.printStackTrace();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Dialog");
-                alert.setContentText("Load Screen Error.");
+                alert.setTitle(resourceBundle.getString("errorDescription"));
+                alert.setContentText(resourceBundle.getString("viewLoadError"));
                 alert.showAndWait();
             }
 
         }  else {
 
-        loginFailure();
+        failedLoginAttempt();
 
         if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(resourceBundle.getString("errorDialog"));
-            alert.setContentText(resourceBundle.getString("incorrectUsernamePassword"));
+            alert.setTitle(resourceBundle.getString("errorDescription"));
+            alert.setContentText(resourceBundle.getString("wrongUsernamePassword"));
             alert.showAndWait();
         }
     }
 
 
+    /** This method alerts the user if there is an appointment within 15 minutes or if they are in the clear.
+     * Catches Exception, throws alert, and prints a stacktrace to the console for debugging. */
+
     }
-    private void alertAppointment(){
+    private void appointmentAlert(){
         LocalDateTime localDateTime = LocalDateTime.now();
-        LocalDateTime localDateTimePlus15 = localDateTime.plusMinutes(15);
+        LocalDateTime addFifteen = localDateTime.plusMinutes(15);
 
         ObservableList<Appointment> upcomingAppointments = FXCollections.observableArrayList();
 
@@ -152,14 +151,14 @@ public class LoginController implements Initializable {
 
             if (appointments != null) {
                 for (Appointment appointment: appointments) {
-                    if (appointment.getStartTime().isAfter(localDateTime) && appointment.getStartTime().isBefore(localDateTimePlus15)) {
+                    if (appointment.getStartTime().isAfter(localDateTime) && appointment.getStartTime().isBefore(addFifteen)) {
                         upcomingAppointments.add(appointment);
 
                         if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle(resourceBundle.getString("appointmentAlert"));
+                            alert.setTitle(resourceBundle.getString("alertForAppointment"));
                             alert.setContentText(
-                                    resourceBundle.getString("lessThanFifteenMin") +
+                                    resourceBundle.getString("panicMode") +
                                             "\n" +
                                             resourceBundle.getString("appointmentId") +
                                             " " +
@@ -181,8 +180,8 @@ public class LoginController implements Initializable {
                 if (upcomingAppointments.size() < 1) {
                     if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle(resourceBundle.getString("appointmentAlert"));
-                        alert.setContentText(resourceBundle.getString("noUpcomingAppointments"));
+                        alert.setTitle(resourceBundle.getString("alertForAppointment"));
+                        alert.setContentText(resourceBundle.getString("inTheClear"));
                         alert.setResizable(true);
                         alert.showAndWait();
                     }
@@ -190,8 +189,8 @@ public class LoginController implements Initializable {
             } else {
                 if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle(resourceBundle.getString("appointmentAlert"));
-                    alert.setContentText(resourceBundle.getString("noUpcomingAppointments"));
+                    alert.setTitle(resourceBundle.getString("alertForAppointment"));
+                    alert.setContentText(resourceBundle.getString("inTheClear"));
                     alert.setResizable(true);
                     alert.showAndWait();
                 }
@@ -202,16 +201,15 @@ public class LoginController implements Initializable {
         }
     }
 
-    /** Helper function to write user login success activity to the login_activity.txt file
-     *  Catches IOException, throws alert, and prints stacktrace.
-     *  Retrieves file name value from Lambda Expression
-     */
-    private void loginSuccess() {
+    /** Assistance function to write successful logins to the login_activity.txt file
+     *  Catches IOException, throws alert, and prints a stacktrace to the console for debugging.
+     *  Pulls file name value from a Lambda expression. */
+    private void successfulLogin() throws SQLException {
 
-        alertAppointment();
+       appointmentAlert();
 
         try {
-            FileWriter fileWriter = new FileWriter(logActivity.getFileName(), true);
+            FileWriter fileWriter = new FileWriter(loginAttempts.getFileName(), true);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             java.util.Date date = new java.util.Date(System.currentTimeMillis());
             fileWriter.write("Successful Login: Username=" + TextUsername.getText() + " Password=" + TextPassword.getText() + " Timestamp: " + simpleDateFormat.format(date) + "\n");
@@ -221,13 +219,12 @@ public class LoginController implements Initializable {
         }
     }
 
-    /** Helper function to write user login failure activity to the login_activity.txt file
-     *  Catches IOException, throws alert, and prints stacktrace.
-     *  Retrieves file name value from Lambda Expression
-     */
-    private void loginFailure() {
+    /** Assistance function to write failed logins to the login_activity.txt file
+     *  Catches IOException, throws alert, and prints a stacktrace to the console for debugging.
+     *  Pulls file name value from a Lambda expression. */
+    private void failedLoginAttempt() {
         try {
-            FileWriter fileWriter = new FileWriter(logActivity.getFileName(), true);
+            FileWriter fileWriter = new FileWriter(loginAttempts.getFileName(), true);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             java.util.Date date = new Date(System.currentTimeMillis());
             fileWriter.write("Failed Login: Username=" + TextUsername.getText() + " Password=" + TextPassword.getText() + " Timestamp: " + simpleDateFormat.format(date) + "\n");
@@ -237,24 +234,32 @@ public class LoginController implements Initializable {
         }
     }
 
+    /** Asks the user if they really want to close the application when clicked.
+     *  Catches IOException, throws alert, and prints a stacktrace to the console for debugging.
+     * @param event ActionEvent prompts the user to close the application by dialog box with some questions. */
     public void cancelButton(ActionEvent event){
-        Stage stage = (Stage) ButtonCancel.getScene().getWindow();
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout!");
-        alert.setContentText("Are you sure you want to log out?");
-        alert.showAndWait();
-        stage.close();
-    }
+            if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
+                // CONFIRMATION is same in French and English
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, resourceBundle.getString("confirmLogout"));
+                Optional<ButtonType> result = alert.showAndWait();
 
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                    stage.close();
+                }
+            }
+        }
 
-
+    /**This method initializes the login screen.
+     *  Gets region and converts to French if location is in French Canada.
+     * @param location This is the locator for relative paths for navigation.
+     * @param resources This is the resource bundle that localizes the root objects. */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         resourceBundle = ResourceBundle.getBundle("Language/language", Locale.getDefault());
 
         if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")){
-
 
             LabelTitle.setText(resourceBundle.getString("title"));
             LabelUsername.setText(resourceBundle.getString("username"));
@@ -265,6 +270,7 @@ public class LoginController implements Initializable {
             LabelTimeZoneDisplay.setText(String.valueOf(ZoneId.of(TimeZone.getDefault().getID())));
             ButtonLogin.setText(resourceBundle.getString("login"));
             ButtonCancel.setText(resourceBundle.getString("cancel"));
+
         }
     }
 }

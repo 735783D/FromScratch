@@ -19,7 +19,7 @@ public class DBCustomers {
     public static ObservableList<Customer> getCustomers() throws SQLException {
         ObservableList<Customer> customers = FXCollections.observableArrayList();
 
-        String searchStatement = "SELECT * FROM customers AS c INNER JOIN first_level_divisions AS d ON c.Division_ID = d.Division_ID INNER JOIN countries AS co ON co.Country_ID=d.Country_ID;";
+        String searchStatement = "SELECT * FROM customers AS c INNER JOIN first_level_divisions AS d ON c.Division_ID = d.Division_ID INNER JOIN countries AS co ON co.Country_ID=d.Country_ID ORDER BY Customer_ID;";
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), searchStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
@@ -58,15 +58,15 @@ public class DBCustomers {
      * @param address    String value of Customer Address
      * @param postalCode String value of Customer Postal Code
      * @param phone      String value of Customer Phone Number
-     * @param division   String value of Division Name
+     * @param division  String value of Division Name
      * @return Boolean Returns true if the customer was successfully created and false if the customer creation failed
      * @throws SQLException Catches SQLException, prints stacktrace, and error message.
      */
-    public static boolean createCustomer(String name, String address, String postalCode, String phone, String division, String country) throws SQLException {
+    public static boolean createCustomer(String name, String address, String postalCode, String phone, String division) throws SQLException {
 
         Division newDivision = DivisionQuery.getDivisionId(division);
 
-        String insertStatement = "INSERT INTO customers(Customer_Name, Address, Postal_Code, Phone, Division, Country) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertStatement = "INSERT INTO customers(Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (?, ?, ?, ?, ?)";
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), insertStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
@@ -75,9 +75,9 @@ public class DBCustomers {
         preparedStatement.setString(2, address);
         preparedStatement.setString(3, postalCode);
         preparedStatement.setString(4, phone);
-        preparedStatement.setString(5, division);
-        preparedStatement.setString(6, country);
-       // preparedStatement.setInt(5, newDivision.getDivisionId());
+       // preparedStatement.setString(5, division);
+        //preparedStatement.setString(6, country);
+        preparedStatement.setInt(5, newDivision.getDivisionId());
 
         try {
             preparedStatement.execute();
@@ -104,24 +104,20 @@ public class DBCustomers {
      * @return Boolean Returns true if the customer was successfully updated and false if the customer update failed
      * @throws SQLException Catches SQLException, prints stacktrace, and error message.
      */
-    public static boolean updateCustomer(int customerId, String name, String address, String postalCode, String phone, String division, String country) throws SQLException {
+    public static boolean updateCustomer(int customerId, String name, String address, String postalCode, String phone, String division, String value) throws SQLException {
+        Division newDivision = DivisionQuery.getDivisionId(division);
 
-
-        String insertStatement = "UPDATE customers SET Customer_Name=?, Address=?, Postal_Code=?, Phone=?, Division=?, Country=? WHERE Customer_ID=?";
+        String insertStatement = "UPDATE customers SET Customer_Name=?, Address=?, Postal_Code=?, Phone=?, Division_ID=? WHERE Customer_ID=?";
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), insertStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
-
 
         preparedStatement.setString(1, name);
         preparedStatement.setString(2, address);
         preparedStatement.setString(3, postalCode);
         preparedStatement.setString(4, phone);
-        preparedStatement.setString(5, division);
-        preparedStatement.setString(6, country);
-        preparedStatement.setInt(7, customerId);
-       // preparedStatement.setString(7,country);
-
+        preparedStatement.setInt(5, newDivision.getDivisionId());
+        preparedStatement.setInt(6, customerId);
 
         try {
             preparedStatement.execute();

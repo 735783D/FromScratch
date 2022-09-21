@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /** This class contains SQL operations made on the Appointments Collection.*/
 public class DBAppointments {
@@ -18,7 +19,9 @@ public class DBAppointments {
     public static ObservableList<Appointment> getAppointments() throws SQLException {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
-        String queryStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID;";
+        String queryStatement = "SELECT * FROM appointments;";
+                //" AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID ORDER BY Appointment_ID;";
+
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), queryStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
@@ -60,19 +63,11 @@ public class DBAppointments {
     public static ObservableList<Appointment> getAppointmentsMonth() throws SQLException {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
-//        LocalDateTime todaysDate = LocalDateTime.now();
-//        LocalDateTime lastMonth = todaysDate.minusDays(30);
-
-
         String queryStatement = "SELECT * from appointments WHERE Start >=  (CURRENT_DATE) + INTERVAL 1 DAY - INTERVAL 1 MONTH AND Start < LAST_DAY(CURRENT_DATE) + INTERVAL 1 DAY;";
-
-
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), queryStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
 
-//        preparedStatement.setDate(1, Date.valueOf(todaysDate.toLocalDate()));
-//        preparedStatement.setDate(2, Date.valueOf(lastMonth.toLocalDate()));
 
         try {
             preparedStatement.execute();
@@ -111,19 +106,12 @@ public class DBAppointments {
     public static ObservableList<Appointment> getAppointmentsWeek() throws SQLException {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
-//        LocalDateTime todaysDate = LocalDateTime.now();
-//        LocalDateTime lastWeek = todaysDate.minusDays(7);
-
-        //String queryStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID WHERE Start < ? AND Start > ?;";
-
         String queryStatement = "SELECT * from appointments WHERE YEARWEEK(`Start`, 1) = YEARWEEK(CURDATE(), 0);";
-
 
         DBQuery.setPreparedStatement(DBConnection.getConnection(), queryStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
 
-//        preparedStatement.setDate(1, Date.valueOf(todaysDate.toLocalDate()));
-//        preparedStatement.setDate(2, Date.valueOf(lastWeek.toLocalDate()));
+
 
         try {
             preparedStatement.execute();
@@ -409,6 +397,96 @@ public class DBAppointments {
             System.out.println("Error: " + e.getMessage());
         }
         return null;
+    }
+
+    /**
+     * @return Report of the appointments by type and month
+     * Not the prettiest format. But, you work with what you've got.
+     */
+    public static String reportAppointmentTypeMonth() {
+        try {
+            StringBuilder reportAppointmentPerTypeMonth = new StringBuilder("Month          |               Total            ");
+            reportAppointmentPerTypeMonth.append("\n");
+            String sql = "SELECT MONTHNAME(start) as Month, Type, COUNT(*)  as Amount FROM appointments GROUP BY MONTH(start), type";
+
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sql);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String month = resultSet.getString("Month");
+                String type = resultSet.getString("Type");
+                String amount = resultSet.getString("Amount");
+
+                reportAppointmentPerTypeMonth.append(month + "\t\t\t" + type + "\t\t\t" + amount + "\n");
+            }
+            return reportAppointmentPerTypeMonth.toString();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Try again";
+        }
+    }
+
+    /**
+     * @return Report that shows amount of schedules by contactID
+     * Also did the best I could on the formatting.
+     */
+    public static String reportAppointmentContact() {
+        try {
+
+            StringBuilder reportAppointmentEachContact = new StringBuilder("Contact ID | Appointment ID | Customer ID | Title | Type | Description | Start | End\n");
+            String sql = "SELECT Contact_ID, Appointment_ID, Customer_ID, Title, Type, Description, Start, End FROM appointments ORDER BY Contact_ID ";
+
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sql);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int contactID = resultSet.getInt("Contact_ID");
+                int appointmentID = resultSet.getInt("Appointment_ID");
+                int customerID = resultSet.getInt("Customer_ID");
+                String title = resultSet.getString("Title");
+                String type = resultSet.getString("Type");
+                String description = resultSet.getString("Description");
+                LocalDateTime start = resultSet.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime end = resultSet.getTimestamp("End").toLocalDateTime();
+
+                reportAppointmentEachContact.append("\n" + contactID + "\t" + appointmentID + "\t" + customerID + "\t" + title + "\t" + type + "\t" + description + "\t" + start + "\t" + end + "\n");
+            }
+            return reportAppointmentEachContact.toString();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Try again";
+        }
+
+    }
+
+
+
+    /**
+     * @return Report of amount of types by customerID
+     * This formatting turned out nice.
+     */
+    public static String reportAppointmentCustomerId() {
+        try {
+            StringBuilder reportAppointmentPerTypeLocation = new StringBuilder("Customer ID     |     Total     |    Type   \n");
+            reportAppointmentPerTypeLocation.append("\n");
+
+            String sql = "SELECT Customer_ID, Type, COUNT(*)  as Amount FROM appointments GROUP BY Customer_ID, type";
+
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sql);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String customerId = resultSet.getString("Customer_ID");
+                String type = resultSet.getString("Type");
+                String amount = resultSet.getString("Amount");
+                reportAppointmentPerTypeLocation.append(customerId + "\t\t\t\t" + amount + "\t\t" + type + "\n");
+            }
+            return reportAppointmentPerTypeLocation.toString();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Try again";
+        }
     }
 
 

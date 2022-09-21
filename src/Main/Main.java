@@ -8,8 +8,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 
+interface LambdaTry {
+    void show();
+}
 public class Main extends Application {
 
     @Override
@@ -30,8 +32,14 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        LambdaTry obj;
+        obj = () -> System.out.println("Hello");
+        obj.show();
+
         DBConnection.startConnection();
         launch(args);
         DBConnection.closeConnection();
+
+
     }
 }

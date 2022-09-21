@@ -76,7 +76,10 @@ public class UpdateCustomersController implements Initializable {
 
 
 
-
+    /** Takes the user back to the Main Menu screen.
+     * Catches exception if there is a problem navigating back to the previous screen.
+     * @param event ActionEvent navigates to Main Menu screen when clicked
+     */
     @FXML
     void home(ActionEvent event) {
         try {
@@ -94,6 +97,10 @@ public class UpdateCustomersController implements Initializable {
         }
     }
 
+    /** Cancels customer update and takes user back to Customers display screen.
+     * Catches exception if there is a problem navigating back to the previous screen.
+     * @param event ActionEvent Navigates to Customer View when cancel button is clicked
+     */
     @FXML
     void cancel(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Navigate back to Customers?");
@@ -116,6 +123,11 @@ public class UpdateCustomersController implements Initializable {
         }
     }
 
+    /** This method updates the selected Customer with new paramters as per the user.
+     * It calls a validation method to check for paramter errors.
+     * Catches Exception, throws alert, and prints stacktrace for debugging.
+     * @param event ActionEvent updates Customer if valid when the Save button is clicked
+     */
     @FXML
     void Save(ActionEvent event) throws SQLException {
         boolean valid = validateNotEmpty(
@@ -166,7 +178,7 @@ public class UpdateCustomersController implements Initializable {
         }
     }
 
-
+    /** Populates Country Combo Box */
     private void setCountryCombo(){
         ObservableList<String> countryList = FXCollections.observableArrayList();
 
@@ -184,6 +196,7 @@ public class UpdateCustomersController implements Initializable {
         CountryBox.setItems(countryList);
     }
 
+    /** Populates Division Combo Box */
     private void setDivisionCombo(){
         ObservableList<String> divisionList = FXCollections.observableArrayList();
 
@@ -200,6 +213,10 @@ public class UpdateCustomersController implements Initializable {
 
         DivisionBox.setItems(divisionList);
     }
+
+    /** Queries database for list of countries and populates the division combo box off of the result.
+     * Catches Exception, throws alert, and prints stacktrace for debugging.
+     * @param event ActionEvent selects country */
     @FXML
     void SelectCountry(ActionEvent event) {
         ObservableList<String> divisionList = FXCollections.observableArrayList();
@@ -217,10 +234,15 @@ public class UpdateCustomersController implements Initializable {
     }
 
     @FXML
-    void SelectDivision(ActionEvent event) {
+    void SelectDivision(ActionEvent event) {}
 
-    }
-
+    /** Method to help validate input fields are selected and not empty
+     * Throws alert if fields are not selected or are empty
+     * @param name String value of Customer Name as per user input.
+     * @param address String value of Customer Address as per user input.
+     * @param postalCode String value of Customer Postal Code as per user input.
+     * @param phone String value of Customer Phone Number as per user input.
+     * @return Returns a Boolean true if valid and false if not. */
     private boolean validateNotEmpty(String name, String address, String postalCode, String phone){
         if (name.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -273,17 +295,21 @@ public class UpdateCustomersController implements Initializable {
         return true;
     }
 
+    /** This method receives the selected customer from the Customer screen.
+     * @param customer Selected Customer */
     public static void receiveSelectedCustomer(Customer customer) {
         selectedCustomer = customer;
     }
 
+    /** This method pulls the info from the Customers screen to the Update and initializes the combo boxes in the Update Customers screen.
+     * Catches Exception, throws alert, and prints stacktrace for debugging.
+     * @param location This is the locator for relative paths for navigation.
+     * @param resources This is the resource bundle that localizes the root objects. */
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Populate dropdown for division and country
+    public void initialize(URL location, ResourceBundle resources) {
         setDivisionCombo();
         setCountryCombo();
 
-        // Populate text fields with existing data
         CustomerID.setText(Integer.toString(selectedCustomer.getCustomerId()));
         CustomerName.setText(selectedCustomer.getCustomerName());
         CustomerPostalCode.setText(selectedCustomer.getPostalCode());

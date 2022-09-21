@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/** This is the Customers creation Controller */
 public class CreateCustomersController implements Initializable {
 
     @FXML
@@ -71,6 +72,10 @@ public class CreateCustomersController implements Initializable {
     @FXML
     private Button Save;
 
+    /** Navigates to main menu of the application.
+     *  Catches Exception, throws alert, and prints a stacktrace for debugging.
+     * @param event ActionEvent navigates to Main Menu Screen when clicked
+     */
     @FXML
     void home(ActionEvent event) {
         try {
@@ -88,6 +93,10 @@ public class CreateCustomersController implements Initializable {
         }
     }
 
+    /** Cancels the current attempt to create a customer and navigates back to Customer creation screen.
+     * Throws alert if there is a navigation error in the definition.
+     * @param event ActionEvent Navigates to Customer View when cancel button is clicked
+     */
     @FXML
     void cancel(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Navigate back to Customers?");
@@ -110,6 +119,11 @@ public class CreateCustomersController implements Initializable {
         }
     }
 
+    /** This method samse the selected paramters creating the new customer in the database.
+     * It also calls a validation function to ensure that all the parameters are correct.
+     * Catches Exception, throws alert, and prints stacktrace for debugging or proper selection.
+     * @param event ActionEvent saves Customer to the database if valid when Save button is clicked
+     */
     @FXML
     void Save(ActionEvent event) throws SQLException {
         boolean valid = validateNotEmpty(
@@ -125,8 +139,8 @@ public class CreateCustomersController implements Initializable {
                         CustomerAddress.getText(),
                         CustomerPostalCode.getText(),
                         CustomerPhone.getText(),
-                        DivisionBox.getValue(),
-                        CountryBox.getValue());
+                        DivisionBox.getValue());
+
 
                 if (success) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Successfully created new customer");
@@ -160,6 +174,7 @@ public class CreateCustomersController implements Initializable {
     }
 
 
+    /** Populates the Country combo box to be selected by the user. */
     private void setCountryCombo(){
         ObservableList<String> countryList = FXCollections.observableArrayList();
 
@@ -177,6 +192,7 @@ public class CreateCustomersController implements Initializable {
         CountryBox.setItems(countryList);
     }
 
+    /** Populates the Division combo box to be selected by the user.*/
     private void setDivisionCombo(){
         ObservableList<String> divisionList = FXCollections.observableArrayList();
 
@@ -193,6 +209,11 @@ public class CreateCustomersController implements Initializable {
 
         DivisionBox.setItems(divisionList);
     }
+
+    /** Populates Division Combo Box with List of Divisions based on selected Country.
+     * Catches SQLException if there is something wrong in the database, throws alert, and prints stacktrace.
+     * @param event ActionEvent selects country then allows for division selection.
+     */
     @FXML
     void SelectCountry(ActionEvent event) {
         ObservableList<String> divisionList = FXCollections.observableArrayList();
@@ -210,10 +231,16 @@ public class CreateCustomersController implements Initializable {
     }
 
     @FXML
-    void SelectDivision(ActionEvent event) {
+    void SelectDivision(ActionEvent event) {}
 
-    }
-
+    /** This function validates if the Customer Fields are selected and not empty.
+     * Throws alert if fields are not selected or are empty
+     * @param name This is the String value of Customer Name as per the user input.
+     * @param address This is the String value of Customer Address as per the user input.
+     * @param postalCode This is the String value of Customer Postal Code as per the user input.
+     * @param phone This is the String value of Customer Phone Number as per the user input.
+     * @return Returns a Boolean of true if everything is valid and false if not.
+     */
     private boolean validateNotEmpty(String name, String address, String postalCode, String phone){
         if (name.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -265,6 +292,10 @@ public class CreateCustomersController implements Initializable {
 
         return true;
     }
+
+    /**This method initializes the combo boxes in the window and allows them to be populated.
+     * @param url This is the locator for relative paths for navigation.
+     * @param resourceBundle This is the resource bundle that localizes the root objects. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setDivisionCombo();
